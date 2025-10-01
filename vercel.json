@@ -1,0 +1,8 @@
+{
+    "functions": {
+      "api/index.ts": {
+        "runtime": "vercel-deno@latest",
+        "entrypoint": "scripts/dev.js"
+      }
+    }
+  }
