@@ -1,0 +1,8 @@
+deno.lock
+gameServer/out
+client/out
+serverManager/out
+.env
+deps
+serverManager/persistentStorage.json
+adminPanel/out/

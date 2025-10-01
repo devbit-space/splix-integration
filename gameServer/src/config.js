@@ -1,0 +1,103 @@
+/**
+ * How many of the skins should be randomly assigned to players if they either didn't provide one,
+ * or when two players have the same skin and a new color needs to be picked to distinguish the two players.
+ */
+export const FREE_SKIN_COLOR_COUNT = 12;
+
+/**
+ * Used to determine which skin patterns are available freely and which ones require a subscription.
+ */
+export const PAID_SKIN_PATTERN_IDS = [27];
+
+/**
+ * Defines a rectangle around the players position for which tiles are guaranteed to be visible.
+ * Tiles outside this viewport may also have been sent,
+ * but might not be due to `VIEWPORT_EDGE_CHUNK_SIZE` not being reached yet.
+ */
+export const MIN_TILES_VIEWPORT_RECT_SIZE = 20;
+
+/**
+ * The width or height of chunks of tiles that will be sent to a client when the player moves.
+ */
+export const VIEWPORT_EDGE_CHUNK_SIZE = 5;
+
+/**
+ * Defines a rectangle around the players position for which events will be sent to the player.
+ */
+export const UPDATES_VIEWPORT_RECT_SIZE = MIN_TILES_VIEWPORT_RECT_SIZE + VIEWPORT_EDGE_CHUNK_SIZE;
+
+/**
+ * How many tiles around the player should be filled when the player joins a game.
+ */
+export const PLAYER_SPAWN_RADIUS = 2;
+
+/**
+ * How many tiles players move per millisecond. This should be the same value as on the client.
+ */
+export const PLAYER_TRAVEL_SPEED = 0.006;
+
+/**
+ * Time in milliseconds that we allow the player to undo events.
+ * This is essentially the max ping we allow the player to have before they start having a bad time.
+ * If the player kills a player or themselves for instance, we give the client this amount of milliseconds
+ * to make a turn and prevent the event from happening.
+ */
+export const MAX_UNDO_EVENT_TIME = 600;
+
+/**
+ * How many tiles players are allowed to move backwards due to latency.
+ * Assuming a speed of 6 tiles per second and a value of 3 would mean that clients need more than 500ms ping
+ * in order to not be able to control themselves.
+ */
+export const MAX_UNDO_TILE_COUNT = 5;
+
+/**
+ * The maximum allowed skin color id.
+ */
+export const VALID_SKIN_COLOR_RANGE = 13;
+
+/**
+ * The maximum allowed pattern id.
+ */
+export const VALID_SKIN_PATTERN_RANGE = 29;
+
+/**
+ * How many characters player are allowed to have.
+ */
+export const VALID_PLAYER_NAME_LENGTH = 20;
+
+/**
+ * How often (in milliseconds) a new part of the minimap is updated.
+ * The minimap is divided in 4 parts, so a value of 250 would mean the full map sent every second.
+ */
+export const MINIMAP_PART_UPDATE_FREQUENCY = 250;
+
+/**
+ * How often (in milliseconds) the leaderboard is sent to all players in a game.
+ */
+export const LEADERBOARD_UPDATE_FREQUENCY = 3_000;
+
+/**
+ * If the amount of players in a game is less then this,
+ * then scores won't be reported to the global leaderboard.
+ * The current scores of all in game players will be reported
+ * once the player count falls below this threshold,
+ * allowing players to at least get their current progress on the leaderboard.
+ */
+export const REQUIRED_PLAYER_COUNT_FOR_GLOBAL_LEADERBOARD = 10;
+
+/**
+ * List of game modes where scores are reported to the global leaderboard.
+ */
+export const GM_REPORT_SCORES = ["default"];
+
+/**
+ * List of game modes where players are allowed to use trail cancel.
+ */
+export const GM_ALLOW_TRAIL_CANCEL = ["arena", "drawing"];
+
+/**
+ * List of game modes where we force some exploit fixes to be enabled regardless
+ * of the protocol version that was sent by the client.
+ */
+export const GM_FORCE_FLYING_PATCHES = ["arena"];

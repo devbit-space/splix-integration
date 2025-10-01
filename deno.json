@@ -1,0 +1,27 @@
+{
+	"tasks": {
+		"dev": "deno run -A --watch scripts/dev.js",
+		"dev-inspect": "deno run -A --inspect scripts/dev.js",
+		"install-deps": "deno run -A scripts/dev.js --no-init",
+		"check": "deno run --allow-env --allow-read npm:typescript@5.2.2/tsc --noEmit -p ./jsconfig.json",
+		"build-gameserver": "deno run -A scripts/buildGameServer.js",
+		"build-client": "deno run -A scripts/buildClient.js",
+		"build-servermanager": "deno run -A scripts/buildServerManager.js",
+		"build-adminpanel": "deno run -A scripts/buildAdminPanel.js",
+		"fmt": "deno fmt"
+	},
+	"importMap": "importmap.json",
+	"lock": false,
+	"fmt": {
+		"exclude": [
+			".denoTypes",
+			"deps",
+			"client/out",
+			".github/workflows"
+		],
+		"indentWidth": 4,
+		"useTabs": true,
+		"lineWidth": 120,
+		"proseWrap": "preserve"
+	}
+}
