@@ -1,8 +1,19 @@
 {
     "functions": {
-      "api/index.ts": {
-        "runtime": "vercel-deno@latest",
-        "entrypoint": "scripts/dev.js"
-      }
-    }
-  }
+        "api/**/*.ts": {
+            "runtime": "vercel-deno@latest"
+        }
+    },
+    "builds": [
+        {
+            "src": "scripts/dev.js",
+            "use": "vercel-deno@latest"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "scripts/dev.js"
+        }
+    ]
+}
