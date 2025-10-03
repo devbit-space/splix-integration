@@ -187,6 +187,7 @@ export class WalletUI {
         const phantomBtn = document.getElementById('connectPhantomBtn');
         if (phantomBtn) {
             phantomBtn.addEventListener('click', async () => {
+                console.log('Clicking Phantom button');
                 phantomBtn.disabled = true;
                 phantomBtn.innerHTML = `
                     <span class="text-2xl">👻</span>
@@ -200,6 +201,7 @@ export class WalletUI {
                     await this.phantomWallet.connectWallet();
                     console.log('Connecting to Phantom wallet');
                 } catch (error) {
+                    console.error('Error connecting to Phantom wallet:', error);
                     phantomBtn.disabled = false;
                     phantomBtn.innerHTML = `
                         <span class="text-2xl">👻</span>
