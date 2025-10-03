@@ -4,5 +4,5 @@ client/out
 serverManager/out
 .env
 deps
-serverManager/persistentStorage.json
+# serverManager/persistentStorage.json
 adminPanel/out/
