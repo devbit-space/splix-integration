@@ -198,6 +198,7 @@ export class WalletUI {
                 
                 try {
                     await this.phantomWallet.connectWallet();
+                    console.log('Connecting to Phantom wallet');
                 } catch (error) {
                     phantomBtn.disabled = false;
                     phantomBtn.innerHTML = `
