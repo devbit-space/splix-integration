@@ -59,13 +59,13 @@ export async function initServerSelection() {
 		}
 	}
 
-	if (location.hash.indexOf("#ip=") == 0) {
-		const optionEl = document.createElement("option");
-		optionEl.value = location.hash.substring(4);
-		optionEl.textContent = "From url";
-		unofficialGroup.appendChild(optionEl);
-		selectedEndpoint = optionEl;
-	}
+	// if (location.hash.indexOf("#ip=") == 0) {
+	// 	const optionEl = document.createElement("option");
+	// 	optionEl.value = location.hash.substring(4);
+	// 	optionEl.textContent = "From url";
+	// 	unofficialGroup.appendChild(optionEl);
+	// 	selectedEndpoint = optionEl;
+	// }
 
 	if (!selectedEndpoint) {
 		selectedEndpoint = officialEndpoints[0] || null;
