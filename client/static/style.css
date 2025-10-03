@@ -507,3 +507,143 @@ body {
 		gap: 1rem;
 	}
 }
+
+/* Phantom Wallet Styles */
+.wallet-option-btn {
+	transition: all 0.2s ease;
+	border: 1px solid transparent;
+}
+
+.wallet-option-btn:hover {
+	border-color: #8b5cf6;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.wallet-option-btn:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+	transform: none;
+}
+
+.wallet-option-btn:disabled:hover {
+	border-color: transparent;
+	box-shadow: none;
+}
+
+#walletModalOverlay {
+	backdrop-filter: blur(4px);
+}
+
+.btn-secondary {
+	background: linear-gradient(135deg, #374151, #4b5563);
+	border: 1px solid #6b7280;
+	color: #d1d5db;
+	transition: all 0.2s ease;
+}
+
+.btn-secondary:hover:not(:disabled) {
+	background: linear-gradient(135deg, #4b5563, #6b7280);
+	border-color: #9ca3af;
+	color: #f3f4f6;
+	transform: translateY(-1px);
+}
+
+.btn-secondary:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.btn-blue {
+	background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+	border: 1px solid #2563eb;
+	color: white;
+	transition: all 0.2s ease;
+}
+
+.btn-blue:hover:not(:disabled) {
+	background: linear-gradient(135deg, #2563eb, #1e40af);
+	border-color: #1d4ed8;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-blue:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* Wallet connection states */
+.wallet-connected {
+	animation: fadeIn 0.3s ease-in-out;
+}
+
+.wallet-not-connected {
+	animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Loading spinner animation */
+.animate-spin {
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Wallet balance display */
+#balanceMain {
+	background: linear-gradient(135deg, #10b981, #059669);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	font-weight: 700;
+}
+
+#balanceCrypto {
+	color: #6b7280;
+	font-weight: 500;
+}
+
+/* Wallet modal animations */
+#walletModalOverlay {
+	animation: modalFadeIn 0.2s ease-out;
+}
+
+#walletModalOverlay.hidden {
+	animation: modalFadeOut 0.2s ease-in;
+}
+
+@keyframes modalFadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes modalFadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}

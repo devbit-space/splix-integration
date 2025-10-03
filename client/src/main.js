@@ -5257,98 +5257,151 @@ function parseQuery(url) {
 	return query;
 }
 
-// Wallet functionality
-function initWallet() {
-	const copyAddressBtn = document.getElementById('copyAddress');
-	const refreshBalanceBtn = document.getElementById('refreshBalance');
-	const addFundsBtn = document.getElementById('addFunds');
-	const cashOutBtn = document.getElementById('cashOut');
+// Phantom Wallet functionality
+let phantomWallet = null;
+let walletUI = null;
+
+async function initWallet() {
+	try {
+		// Import Phantom wallet modules
+		const { phantomWallet: wallet } = await import('./phantomWallet.js');
+		const { WalletUI } = await import('./walletUI.js');
+		
+		phantomWallet = wallet;
+		walletUI = new WalletUI(phantomWallet);
+		
+		// Setup wallet event listeners
+		setupWalletEventListeners();
+		
+		console.log('Phantom wallet initialized');
+	} catch (error) {
+		console.error('Failed to initialize Phantom wallet:', error);
+		// Fallback to mock wallet for development
+		initMockWallet();
+	}
+}
+
+function setupWalletEventListeners() {
+	if (!phantomWallet || !walletUI) return;
 	
-	// Mock wallet data
-	let walletData = {
-		address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
-		balance: 0.00,
-		cryptoBalance: 0.0000,
-		cryptoType: 'SOL'
-	};
+	// Connect wallet button
+	const connectWalletBtn = document.getElementById('connectWalletBtn');
+	if (connectWalletBtn) {
+		connectWalletBtn.addEventListener('click', () => {
+			walletUI.openModal();
+		});
+	}
 	
 	// Copy address functionality
+	const copyAddressBtn = document.getElementById('copyAddress');
 	if (copyAddressBtn) {
-		copyAddressBtn.addEventListener('click', function() {
-			navigator.clipboard.writeText(walletData.address).then(function() {
+		copyAddressBtn.addEventListener('click', async function() {
+			if (!phantomWallet.isConnected) return;
+			
+			const address = phantomWallet.getFullAddress();
+			try {
+				await navigator.clipboard.writeText(address);
+				
 				// Show temporary feedback
 				const originalText = copyAddressBtn.innerHTML;
-				copyAddressBtn.innerHTML = '<i data-lucide="check" class="wallet-action-icon"></i><span>Copied!</span>';
+				copyAddressBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i>';
 				lucide.createIcons();
 				
 				setTimeout(function() {
 					copyAddressBtn.innerHTML = originalText;
 					lucide.createIcons();
 				}, 2000);
-			}).catch(function(err) {
-				console.error('Failed to copy address: ', err);
-			});
+			} catch (err) {
+				console.error('Failed to copy address:', err);
+			}
 		});
 	}
 	
 	// Refresh balance functionality
+	const refreshBalanceBtn = document.getElementById('refreshBalance');
 	if (refreshBalanceBtn) {
-		refreshBalanceBtn.addEventListener('click', function() {
-			// Simulate loading state
+		refreshBalanceBtn.addEventListener('click', async function() {
+			if (!phantomWallet.isConnected) return;
+			
+			// Show loading state
 			const originalText = refreshBalanceBtn.innerHTML;
-			refreshBalanceBtn.innerHTML = '<i data-lucide="loader-2" class="wallet-action-icon animate-spin"></i><span>Refreshing...</span>';
+			refreshBalanceBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>';
 			lucide.createIcons();
 			
-			// Simulate API call
-			setTimeout(function() {
-				// Mock updated balance
-				walletData.balance = (Math.random() * 100).toFixed(2);
-				walletData.cryptoBalance = (Math.random() * 10).toFixed(4);
-				
-				// Update display
-				updateWalletDisplay();
-				
+			try {
+				await phantomWallet.updateBalance();
+			} catch (error) {
+				console.error('Failed to refresh balance:', error);
+			} finally {
 				// Restore button
 				refreshBalanceBtn.innerHTML = originalText;
 				lucide.createIcons();
-			}, 1500);
+			}
 		});
 	}
 	
 	// Add funds functionality
+	const addFundsBtn = document.getElementById('addFunds');
 	if (addFundsBtn) {
 		addFundsBtn.addEventListener('click', function() {
-			alert('Add Funds functionality would be implemented here. This would typically open a payment modal or redirect to a payment processor.');
+			if (!phantomWallet.isConnected) return;
+			walletUI.openTransactionModal();
 		});
 	}
 	
 	// Cash out functionality
+	const cashOutBtn = document.getElementById('cashOut');
 	if (cashOutBtn) {
 		cashOutBtn.addEventListener('click', function() {
-			if (walletData.balance <= 0) {
+			if (!phantomWallet.isConnected) return;
+			
+			if (phantomWallet.balance <= 0) {
 				alert('No funds available to cash out.');
 				return;
 			}
-			alert('Cash Out functionality would be implemented here. This would typically open a withdrawal modal.');
+			walletUI.openTransactionModal();
 		});
 	}
 	
-	// Update wallet display
-	function updateWalletDisplay() {
-		const balanceMain = document.getElementById('balanceMain');
-		const balanceCrypto = document.getElementById('balanceCrypto');
-		
-		if (balanceMain) {
-			balanceMain.textContent = '$' + walletData.balance;
-		}
-		
-		if (balanceCrypto) {
-			balanceCrypto.textContent = walletData.cryptoBalance + ' ' + walletData.cryptoType;
-		}
-	}
+	// Listen to wallet events
+	phantomWallet.on('connected', (data) => {
+		updateWalletUI(true);
+		walletUI.updateMainWalletUI();
+	});
 	
-	// Initialize display
-	updateWalletDisplay();
+	phantomWallet.on('disconnected', () => {
+		updateWalletUI(false);
+		walletUI.updateMainWalletUI();
+	});
+	
+	phantomWallet.on('balanceUpdated', (balance) => {
+		walletUI.updateBalanceDisplay(balance);
+	});
+}
+
+function updateWalletUI(isConnected) {
+	const walletNotConnected = document.getElementById('walletNotConnected');
+	const walletConnected = document.getElementById('walletConnected');
+	
+	if (isConnected) {
+		walletNotConnected.classList.add('hidden');
+		walletConnected.classList.remove('hidden');
+	} else {
+		walletNotConnected.classList.remove('hidden');
+		walletConnected.classList.add('hidden');
+	}
+}
+
+// Fallback mock wallet for development
+function initMockWallet() {
+	console.log('Using mock wallet for development');
+	
+	const connectWalletBtn = document.getElementById('connectWalletBtn');
+	if (connectWalletBtn) {
+		connectWalletBtn.addEventListener('click', function() {
+			alert('Mock wallet: In production, this would connect to Phantom wallet. Please install Phantom wallet extension.');
+		});
+	}
 }
 
 // Initialize wallet when DOM is loaded
