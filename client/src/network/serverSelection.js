@@ -87,7 +87,7 @@ export async function initServerSelection() {
 			serverSelectEl.firstChild.remove();
 		}
 		const defaultOption = document.createElement("option");
-		defaultOption.value = "ws://localhost:8080/gameserver";
+		defaultOption.value = "ws://82.29.179.56:8080/gameserver";
 		defaultOption.textContent = "Default Server";
 		serverSelectEl.appendChild(defaultOption);
 		serverSelectEl.disabled = false;
