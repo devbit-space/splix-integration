@@ -1218,6 +1218,16 @@ window.onload = function () {
 	ctx = mainCanvas.getContext("2d");
 	minimapCanvas = document.getElementById("minimapCanvas");
 	minimapCtx = minimapCanvas.getContext("2d");
+	
+	// Debug minimap initialization
+	if (minimapCanvas && minimapCtx) {
+		console.log("Minimap canvas initialized:", minimapCanvas.width, "x", minimapCanvas.height);
+		// Draw beautiful grid background
+		drawMinimapGridBackground();
+		console.log("Minimap beautiful grid background drawn");
+	} else {
+		console.error("Failed to initialize minimap canvas");
+	}
 	linesCanvas = document.createElement("canvas");
 	linesCtx = linesCanvas.getContext("2d");
 	tempCanvas = document.createElement("canvas");
@@ -1300,7 +1310,7 @@ window.onload = function () {
 	beginScreen = document.getElementById("beginScreen");
 	playUI = document.getElementById("playUI");
 	uiElems.push(document.getElementById("scoreBlock"));
-	uiElems.push(document.getElementById("miniMap"));
+	// miniMap is now outside playUI, so don't add it to uiElems
 	// closeNotification = document.getElementById("closeNotification");
 	// uiElems.push(closeNotification);
 
@@ -1414,8 +1424,19 @@ export function hideBeginScreen() {
 }
 
 function showMainCanvas() {
+	console.log("Showing main canvas and playUI");
 	playUI.style.display = null;
 	mainCanvas.style.display = null;
+	
+	// Show minimap when entering gameplay
+	const miniMap = document.getElementById("miniMap");
+	if (miniMap) {
+		miniMap.style.display = "block";
+		console.log("Minimap shown for gameplay");
+	} else {
+		console.error("Minimap element not found!");
+	}
+	
 	if ("ontouchstart" in window) {
 		touchControlsElem.style.display = null;
 	}
@@ -1436,9 +1457,17 @@ export function showBeginScreen() {
 }
 
 function hideMainCanvas() {
+	console.log("Hiding main canvas and playUI");
 	playUI.style.display = "none";
 	mainCanvas.style.display = "none";
 	touchControlsElem.style.display = "none";
+	
+	// Hide minimap when leaving gameplay
+	const miniMap = document.getElementById("miniMap");
+	if (miniMap) {
+		miniMap.style.display = "none";
+		console.log("Minimap hidden when leaving gameplay");
+	}
 }
 
 //hides main canvas and ui and shows beginScreen
@@ -1948,19 +1977,36 @@ function onMessage(evt) {
 	if (data[0] == receiveAction.MINIMAP) {
 		var part = data[1];
 		var xOffset = part * 20;
+		console.log("Received minimap part:", part, "data length:", data.length);
+		
+		if (!minimapCtx) {
+			console.error("Minimap context not initialized");
+			return;
+		}
+		
+		// Clear the section and redraw grid background
 		minimapCtx.clearRect(xOffset * 2, 0, 40, 160);
-		minimapCtx.fillStyle = "#000000";
-		for (i = 1; i < data.length; i++) {
+		drawMinimapGridSection(xOffset * 2, 0, 40, 160);
+		
+		// Draw terrain with beautiful orange styling
+		minimapCtx.fillStyle = "#ff6b35";
+		
+		var pixelsDrawn = 0;
+		for (i = 2; i < data.length; i++) {
 			for (j = 0; j < 8; j++) {
 				var filled = (data[i] & (1 << j)) !== 0;
 				if (filled) {
 					var bitNumber = (i - 2) * 8 + j;
-					x = Math.floor(bitNumber / 80) % 80 + xOffset;
+					x = Math.floor(bitNumber / 80) % 20 + xOffset;
 					y = bitNumber % 80;
-					minimapCtx.fillRect(x * 2, y * 2, 2, 2);
+					
+					// Draw beautiful terrain pixel with embossed effect
+					drawMinimapTerrainPixel(x * 2, y * 2);
+					pixelsDrawn++;
 				}
 			}
 		}
+		console.log("Drew", pixelsDrawn, "beautiful terrain pixels for minimap part", part);
 	}
 	if (data[0] == receiveAction.PLAYER_SKIN) {
 		id = bytesToInt(data[1], data[2]);
@@ -2124,7 +2170,12 @@ function resetAll() {
 	resetTitleNextFrame = true;
 	allowSkipDeathTransition = false;
 	skipDeathTransition = false;
-	minimapCtx.clearRect(0, 0, 160, 160);
+	if (minimapCtx) {
+		minimapCtx.clearRect(0, 0, 160, 160);
+		minimapCtx.fillStyle = "#1F2023";
+		minimapCtx.fillRect(0, 0, 160, 160);
+		console.log("Minimap cleared and reset");
+	}
 	hasReceivedChunkThisGame = false;
 	didSendSecondReady = false;
 	showBeginHideMainCanvas();
@@ -5411,6 +5462,140 @@ document.addEventListener('DOMContentLoaded', function() {
 	initNameEdit();
 	initAmountSelection();
 });
+
+// Beautiful minimap rendering functions
+function drawMinimapGridBackground() {
+	if (!minimapCtx) return;
+	
+	const gridSize = 4;
+	const tileSize = 2;
+	
+	for (let x = 0; x < 160; x += gridSize) {
+		for (let y = 0; y < 160; y += gridSize) {
+			// Base tile color (dark charcoal gray)
+			minimapCtx.fillStyle = "#2a2a2a";
+			minimapCtx.fillRect(x, y, tileSize, tileSize);
+			
+			// Top-left highlight (lighter gray)
+			minimapCtx.fillStyle = "#3a3a3a";
+			minimapCtx.fillRect(x, y, 1, 1);
+			
+			// Bottom-right shadow (darker gray)
+			minimapCtx.fillStyle = "#1a1a1a";
+			minimapCtx.fillRect(x + 1, y + 1, 1, 1);
+		}
+	}
+}
+
+function drawMinimapGridSection(startX, startY, width, height) {
+	if (!minimapCtx) return;
+	
+	const gridSize = 4;
+	const tileSize = 2;
+	
+	for (let x = startX; x < startX + width; x += gridSize) {
+		for (let y = startY; y < startY + height; y += gridSize) {
+			// Base tile color (dark charcoal gray)
+			minimapCtx.fillStyle = "#2a2a2a";
+			minimapCtx.fillRect(x, y, tileSize, tileSize);
+			
+			// Top-left highlight (lighter gray)
+			minimapCtx.fillStyle = "#3a3a3a";
+			minimapCtx.fillRect(x, y, 1, 1);
+			
+			// Bottom-right shadow (darker gray)
+			minimapCtx.fillStyle = "#1a1a1a";
+			minimapCtx.fillRect(x + 1, y + 1, 1, 1);
+		}
+	}
+}
+
+function drawMinimapTerrainPixel(x, y) {
+	if (!minimapCtx) return;
+	
+	// Main terrain color (vibrant orange)
+	minimapCtx.fillStyle = "#ff6b35";
+	minimapCtx.fillRect(x, y, 2, 2);
+	
+	// Add subtle highlight
+	minimapCtx.fillStyle = "#ff9f5a";
+	minimapCtx.fillRect(x, y, 1, 1);
+	
+	// Add subtle shadow
+	minimapCtx.fillStyle = "#e55a2b";
+	minimapCtx.fillRect(x + 1, y + 1, 1, 1);
+}
+
+// Debug function to test minimap
+window.testMinimap = function() {
+	console.log("=== MINIMAP DEBUG TEST ===");
+	
+	// Check if elements exist
+	const miniMap = document.getElementById("miniMap");
+	const minimapCanvas = document.getElementById("minimapCanvas");
+	const playUI = document.getElementById("playUI");
+	
+	console.log("miniMap element:", miniMap);
+	console.log("minimapCanvas element:", minimapCanvas);
+	console.log("playUI element:", playUI);
+	
+	if (miniMap) {
+		console.log("miniMap display:", window.getComputedStyle(miniMap).display);
+		console.log("miniMap visibility:", window.getComputedStyle(miniMap).visibility);
+		console.log("miniMap position:", window.getComputedStyle(miniMap).position);
+		console.log("miniMap dimensions:", miniMap.offsetWidth, "x", miniMap.offsetHeight);
+	}
+	
+	if (playUI) {
+		console.log("playUI display:", window.getComputedStyle(playUI).display);
+	}
+	
+	if (minimapCanvas) {
+		console.log("minimapCanvas dimensions:", minimapCanvas.width, "x", minimapCanvas.height);
+		console.log("minimapCanvas display:", window.getComputedStyle(minimapCanvas).display);
+	}
+	
+	// Test rendering with beautiful styling
+	if (minimapCtx) {
+		console.log("Testing beautiful minimap rendering...");
+		minimapCtx.clearRect(0, 0, 160, 160);
+		drawMinimapGridBackground();
+		
+		// Draw some test terrain patterns
+		drawMinimapTerrainPixel(20, 20);
+		drawMinimapTerrainPixel(22, 20);
+		drawMinimapTerrainPixel(20, 22);
+		drawMinimapTerrainPixel(22, 22);
+		
+		drawMinimapTerrainPixel(100, 100);
+		drawMinimapTerrainPixel(102, 100);
+		drawMinimapTerrainPixel(100, 102);
+		drawMinimapTerrainPixel(102, 102);
+		
+		console.log("Beautiful minimap test patterns drawn");
+	} else {
+		console.error("Minimap context not available");
+	}
+	
+	console.log("=== END MINIMAP DEBUG ===");
+};
+
+// Force show minimap for testing
+window.showMinimap = function() {
+	const playUI = document.getElementById("playUI");
+	const miniMap = document.getElementById("miniMap");
+	
+	if (playUI) {
+		playUI.style.display = "block";
+		console.log("Forced playUI to display: block");
+	}
+	
+	if (miniMap) {
+		miniMap.style.display = "block";
+		miniMap.style.visibility = "visible";
+		console.log("Forced miniMap to display: block");
+	}
+};
 
 // Name editing functionality
 function initNameEdit() {

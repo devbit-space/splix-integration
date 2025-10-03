@@ -524,6 +524,12 @@
 			</div>
 			<canvas id="skinScreenCanvas" class="fullscreenCanvas"></canvas>
 		</div>
+		<!-- Minimap moved outside playUI for testing -->
+		<div id="miniMap" class="greenBox">
+			<div id="miniMapPlayer"></div>
+			<canvas id="minimapCanvas" width="160" height="160"></canvas>
+		</div>
+		
 		<div id="playUI" style="display: none">
 			<div id="scoreBlock" class="greenBox">
 				<span>
@@ -541,10 +547,6 @@
 					></span></span>
 			</div>
 			<div id="leaderboard" class="greenBox"></div>
-			<div id="miniMap" class="greenBox">
-				<div id="miniMapPlayer"></div>
-				<canvas id="minimapCanvas" width="160" height="160"></canvas>
-			</div>
 			<div id="lifeBox"></div>
 			<div id="topNotifications"></div>
 		</div>

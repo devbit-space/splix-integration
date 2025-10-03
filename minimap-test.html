@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minimap Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #333;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        
+        #miniMap {
+            position: fixed;
+            width: 160px;
+            height: 160px;
+            left: 10px;
+            top: 10px;
+            padding: 8px;
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            border: 2px solid #444;
+            border-radius: 8px;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        
+        #minimapCanvas {
+            opacity: 1.0;
+            border: none;
+            border-radius: 4px;
+            background: #1a1a1a;
+        }
+        
+        #miniMapPlayer {
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(145deg, #ff6b35, #ff8c42);
+            border-radius: 2px;
+            border: 2px solid #ff0000;
+            position: absolute;
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            z-index: 120;
+            transition: all 0.1s ease;
+        }
+        
+        #miniMapPlayer::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            border: 1px solid black;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .test-controls {
+            margin-top: 200px;
+            padding: 20px;
+            background: #444;
+            border-radius: 5px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background: #666;
+            color: white;
+            border: 1px solid #888;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #777;
+        }
+    </style>
+</head>
+<body>
+    <h1>Minimap Test Page</h1>
+    <p>This page tests the minimap functionality independently.</p>
+    
+    <div id="miniMap">
+        <div id="miniMapPlayer"></div>
+        <canvas id="minimapCanvas" width="160" height="160"></canvas>
+    </div>
+    
+    <div class="test-controls">
+        <h3>Test Controls:</h3>
+        <button onclick="testMinimap()">Test Minimap</button>
+        <button onclick="clearMinimap()">Clear Minimap</button>
+        <button onclick="drawPattern()">Draw Pattern</button>
+        <button onclick="movePlayer()">Move Player</button>
+    </div>
+    
+    <script>
+        let minimapCtx;
+        let playerX = 80;
+        let playerY = 80;
+        
+        window.onload = function() {
+            const canvas = document.getElementById("minimapCanvas");
+            minimapCtx = canvas.getContext("2d");
+            
+            if (minimapCtx) {
+                console.log("Minimap canvas initialized");
+                // Draw beautiful initial pattern
+                drawPattern();
+            } else {
+                console.error("Failed to initialize minimap canvas");
+            }
+        };
+        
+        function testMinimap() {
+            console.log("Testing minimap...");
+            if (minimapCtx) {
+                // Draw beautiful test pattern
+                drawPattern();
+                console.log("Beautiful test pattern drawn");
+            }
+        }
+        
+        function clearMinimap() {
+            if (minimapCtx) {
+                minimapCtx.clearRect(0, 0, 160, 160);
+                // Draw just the grid background without terrain
+                drawGridBackground();
+                console.log("Minimap cleared to grid background");
+            }
+        }
+        
+        function drawPattern() {
+            if (minimapCtx) {
+                // Clear canvas
+                minimapCtx.clearRect(0, 0, 160, 160);
+                
+                // Draw beautiful grid background with embossed effect
+                drawGridBackground();
+                
+                // Draw terrain elements
+                drawTerrainElements();
+                
+                console.log("Beautiful terrain pattern drawn");
+            }
+        }
+        
+        function drawGridBackground() {
+            const gridSize = 4;
+            const tileSize = 2;
+            
+            for (let x = 0; x < 160; x += gridSize) {
+                for (let y = 0; y < 160; y += gridSize) {
+                    // Base tile color (dark charcoal gray)
+                    minimapCtx.fillStyle = "#2a2a2a";
+                    minimapCtx.fillRect(x, y, tileSize, tileSize);
+                    
+                    // Top-left highlight (lighter gray)
+                    minimapCtx.fillStyle = "#3a3a3a";
+                    minimapCtx.fillRect(x, y, 1, 1);
+                    
+                    // Bottom-right shadow (darker gray)
+                    minimapCtx.fillStyle = "#1a1a1a";
+                    minimapCtx.fillRect(x + 1, y + 1, 1, 1);
+                }
+            }
+        }
+        
+        function drawTerrainElements() {
+            // Draw orange square (top-left area)
+            minimapCtx.fillStyle = "#ff6b35";
+            minimapCtx.fillRect(20, 20, 24, 24);
+            
+            // Add red outline to orange square
+            minimapCtx.strokeStyle = "#ff0000";
+            minimapCtx.lineWidth = 1;
+            minimapCtx.strokeRect(20, 20, 24, 24);
+            
+            // Draw orange circle (bottom-right area)
+            minimapCtx.fillStyle = "#ff8c42";
+            minimapCtx.beginPath();
+            minimapCtx.arc(120, 120, 8, 0, 2 * Math.PI);
+            minimapCtx.fill();
+            
+            // Draw connecting bar (textured rope-like appearance)
+            minimapCtx.fillStyle = "#ff6b35";
+            minimapCtx.fillRect(130, 116, 20, 8);
+            
+            // Add texture to the bar
+            minimapCtx.fillStyle = "#ff8c42";
+            for (let i = 0; i < 20; i += 2) {
+                minimapCtx.fillRect(130 + i, 116, 1, 8);
+            }
+            
+            // Draw orange block (5x5 grid of smaller squares)
+            const blockX = 100;
+            const blockY = 100;
+            const smallSquareSize = 3;
+            
+            for (let i = 0; i < 5; i++) {
+                for (let j = 0; j < 5; j++) {
+                    const x = blockX + i * smallSquareSize;
+                    const y = blockY + j * smallSquareSize;
+                    
+                    // Vary the orange color slightly for texture
+                    const colorVariation = (i + j) % 2 === 0 ? "#ff6b35" : "#ff8c42";
+                    minimapCtx.fillStyle = colorVariation;
+                    minimapCtx.fillRect(x, y, smallSquareSize - 1, smallSquareSize - 1);
+                    
+                    // Add subtle highlight
+                    minimapCtx.fillStyle = "#ff9f5a";
+                    minimapCtx.fillRect(x, y, 1, 1);
+                    
+                    // Add subtle shadow
+                    minimapCtx.fillStyle = "#e55a2b";
+                    minimapCtx.fillRect(x + smallSquareSize - 2, y + smallSquareSize - 2, 1, 1);
+                }
+            }
+        }
+        
+        function movePlayer() {
+            playerX = Math.random() * 160;
+            playerY = Math.random() * 160;
+            
+            const player = document.getElementById("miniMapPlayer");
+            player.style.left = playerX + "px";
+            player.style.top = playerY + "px";
+            
+            console.log("Player moved to:", playerX, playerY);
+        }
+    </script>
+</body>
+</html>

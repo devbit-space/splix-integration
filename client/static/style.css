@@ -126,26 +126,51 @@ body {
 	height: 160px;
 	left: 10px;
 	top: 10px;
-	padding: 3px;
+	padding: 8px;
 	transform-origin: left top;
-	background-color: #1F2023;
-	border: 1px solid #313235;
-	border-radius: 0.5rem;
+	background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+	border: 2px solid #444;
+	border-radius: 8px;
+	box-shadow: 
+		0 4px 8px rgba(0, 0, 0, 0.3),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1),
+		inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+	z-index: 1000;
+	display: none;
 }
 
 #minimapCanvas {
-	opacity: 0.4;
+	opacity: 1.0;
+	border: none;
+	border-radius: 4px;
+	background: #1a1a1a;
 }
 
 #miniMapPlayer {
-	width: 3px;
-	height: 3px;
-	background-color: white;
-	border-radius: 3px;
-	border: 1px solid black;
+	width: 8px;
+	height: 8px;
+	background: linear-gradient(145deg, #ff6b35, #ff8c42);
+	border-radius: 2px;
+	border: 2px solid #ff0000;
 	position: absolute;
-	box-shadow: 1.5px 1.5px 4px rgba(0, 0, 0, 0.2);
+	box-shadow: 
+		0 2px 4px rgba(0, 0, 0, 0.4),
+		inset 0 1px 0 rgba(255, 255, 255, 0.3);
 	z-index: 120;
+	transition: all 0.1s ease;
+}
+
+#miniMapPlayer::after {
+	content: '';
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	width: 2px;
+	height: 2px;
+	background: white;
+	border-radius: 50%;
+	border: 1px solid black;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
 
 #lifeBox {
