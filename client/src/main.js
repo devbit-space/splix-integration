@@ -5288,6 +5288,7 @@ function setupWalletEventListeners() {
 	const connectWalletBtn = document.getElementById('connectWalletBtn');
 	if (connectWalletBtn) {
 		connectWalletBtn.addEventListener('click', () => {
+			console.log('Connect wallet button clicked');
 			walletUI.openModal();
 		});
 	}
