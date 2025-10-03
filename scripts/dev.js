@@ -290,7 +290,7 @@ if (!Deno.args.includes("--no-init")) {
 							<ul>
 								<li><a href="/client/">/client/</a> - The splix client.</li>
 								<li><a href="/client/flags.html">/client/flags.html</a> - Client flags for debugging etc.</li>
-								<li>/gameserver - The gameserver, <a href="/client/#ip=ws://localhost:8080/gameserver">click here to connect to it using a client</a></li>
+								<li>/gameserver - The gameserver, <a href="/client/#ip=ws://82.29.179.56:8080/gameserver">click here to connect to it using a client</a></li>
 								<li><a href="/adminpanel/">/adminpanel/</a> - Admin panel for server management.</li>
 								<li>/servermanager/ - Hosts several endpoints for servermanagement.</li>
 								<li><a href="/servermanager/gameservers">/servermanager/gameservers</a> - Endpoint which can be used by clients to list available servers.</li>
