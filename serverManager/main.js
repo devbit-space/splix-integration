@@ -5,10 +5,10 @@ if (!persistentStoragePath) {
 	console.warn("No PERSISTENT_STORAGE_PATH environment variable has been set, configurations will not be saved.");
 }
 
-// const port = parseInt(Deno.env.get("PORT") || "8080");
-// const hostname = Deno.env.get("HOSTNAME") || "127.0.0.1";
 const port = parseInt(Deno.env.get("PORT") || "8080");
-const hostname = Deno.env.get("HOSTNAME") || "0.0.0.0";
+const hostname = Deno.env.get("HOSTNAME") || "127.0.0.1";
+// const port = parseInt(Deno.env.get("PORT") || "8080");
+// const hostname = Deno.env.get("HOSTNAME") || "0.0.0.0";
 
 const websocketAuthToken = Deno.env.get("WEBSOCKET_AUTH_TOKEN");
 if (!websocketAuthToken) {
