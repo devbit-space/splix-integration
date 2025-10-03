@@ -9,9 +9,15 @@ export async function initServerSelection() {
 		endPoint = url.href;
 	}
 
-	const response = await fetch(endPoint);
-	/** @type {import("../../serverManager/src/ServerManager.js").ServersJson} */
-	const servers = await response.json();
+	console.log("Attempting to fetch servers from:", endPoint);
+	try {
+		const response = await fetch(endPoint);
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+		/** @type {import("../../serverManager/src/ServerManager.js").ServersJson} */
+		const servers = await response.json();
+		console.log("Successfully loaded servers:", servers);
 
 	while (serverSelectEl.firstChild) {
 		serverSelectEl.firstChild.remove();
@@ -71,9 +77,28 @@ export async function initServerSelection() {
 	serverSelectEl.selectedIndex = selectedEndpoint.index;
 
 	serverSelectEl.disabled = false;
-	joinButton.disabled = false;
+	const joinButton = document.getElementById("joinButton");
+	if (joinButton) joinButton.disabled = false;
+	} catch (error) {
+		console.error("Failed to load server list:", error);
+		console.log("Using fallback server option");
+		// Fallback: add a default server option
+		while (serverSelectEl.firstChild) {
+			serverSelectEl.firstChild.remove();
+		}
+		const defaultOption = document.createElement("option");
+		defaultOption.value = "ws://localhost:8080/gameserver";
+		defaultOption.textContent = "Default Server";
+		serverSelectEl.appendChild(defaultOption);
+		serverSelectEl.disabled = false;
+		const joinButton = document.getElementById("joinButton");
+		if (joinButton) joinButton.disabled = false;
+		console.log("Fallback server option added, join button enabled");
+	}
 }
 
 export function getSelectedServer() {
-	return serverSelectEl.value;
+	const server = serverSelectEl.value;
+	console.log("Selected server:", server);
+	return server;
 }

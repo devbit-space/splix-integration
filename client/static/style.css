@@ -464,6 +464,34 @@ body {
 	color: white;
 }
 
+/* Amount Selection Buttons */
+.amount-btn {
+	flex: 1;
+	padding: 0.75rem 1rem;
+	background-color: #2A2B2E;
+	border: 1px solid #313235;
+	border-radius: 0.5rem;
+	color: white;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.amount-btn:hover {
+	background-color: #313235;
+}
+
+.amount-btn-selected {
+	background-color: #FDD835;
+	color: black;
+	border-color: #FDD835;
+	box-shadow: 0 0 10px rgba(253, 216, 53, 0.5);
+}
+
+.amount-btn-selected:hover {
+	background-color: #FBC02D;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
 	.container {

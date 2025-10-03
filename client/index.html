@@ -88,7 +88,17 @@
 		<div id="touchControls" style="display: none"></div>
 		
 		<div id="beginScreen">
+			<canvas id="logoCanvas" style="display: none"></canvas>
+			<!-- <br> -->
 			<div class="container mx-auto p-4 md:p-6">
+				<!-- Ad container -->
+				 <div style="display: none">
+					 <div id="adboxContainer" class="card p-4 mb-6">
+						 <button class="remove-ads-button btn-secondary text-sm font-semibold py-2 px-4 rounded-lg mb-2">Don't want to see ads?</button>
+						 <div id="adboxContent"></div>
+					 </div>
+				 </div>
+				
 				<!-- Header -->
 				<header class="flex justify-between items-center mb-6">
 					<div class="text-sm font-semibold">Welcome, <span class="text-yellow-400">Player!</span></div>
@@ -99,12 +109,12 @@
 					<div class="flex items-center space-x-4">
 						<i data-lucide="volume-2" class="cursor-pointer hover:text-white"></i>
 						<i data-lucide="help-circle" class="cursor-pointer hover:text-white"></i>
-						<i data-lucide="settings" class="cursor-pointer hover:text-white"></i>
+						<i data-lucide="log-out" class="cursor-pointer hover:text-white"></i>
 					</div>
 				</header>
 
 				<!-- Main Content Grid -->
-				<main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+				<main id="mainMenu" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 					<!-- Left Column -->
 					<div class="space-y-6">
 						<!-- Leaderboard Card -->
@@ -148,21 +158,31 @@
 							<button class="w-full mt-4 btn-secondary text-sm font-semibold py-2 rounded-lg">View Full Leaderboard</button>
 						</div>
 						
-						<!-- Game Info Card -->
+						<!-- Friends Card -->
 						<div class="card p-4">
 							<div class="flex justify-between items-center mb-4">
 								<div class="flex items-center gap-2">
-									<i data-lucide="info" class="text-blue-400 w-5 h-5"></i>
-									<h2 class="font-bold text-lg text-white">Game Info</h2>
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="users" class="lucide lucide-users text-blue-400 w-5 h-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>
+									<h2 class="font-bold text-lg text-white">Friends</h2>
+								</div>
+								<div class="flex items-center gap-4 text-xs font-semibold">
+									<a href="#" class="flex items-center gap-1 hover:text-white"><i data-lucide="refresh-cw" class="w-3 h-3"></i>Refresh</a>
+									<span class="text-gray-400">0 playing</span>
 								</div>
 							</div>
 							<div class="text-sm text-gray-300 space-y-2">
-								<p>• Use arrow keys or WASD to move</p>
-								<p>• Capture territory by surrounding areas</p>
-								<p>• Avoid hitting trails to stay alive</p>
-								<p>• Conquer the most land to win!</p>
+								<div class="text-center py-8 text-gray-400">
+									<i data-lucide="user-plus" class="w-12 h-12 mx-auto mb-2"></i>
+									<p>No friends... add some!</p>
+								</div>
+								<button class="w-full btn-secondary text-sm font-semibold py-2 rounded-lg">Add Friends</button>
 							</div>
 						</div>
+
+						<button class="w-full flex items-center justify-center gap-2 bg-[#5865F2] hover:bg-[#4f5bda] text-white font-semibold py-2.5 rounded-lg">
+						   <svg class="w-6 h-6" role="img" viewBox="0 0 248 204" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M209.8 0c-11.4 0-22 3.5-31 9.5-9 6.5-16.5 15-22.5 25.5-6 10-10.5 21.5-13.5 34.5-2.2 9.8-3.2 20-3.2 30.5 0 10.5 1 20.7 3.2 30.5 3 13 7.5 24.5 13.5 34.5 6 10.5 13.5 19 22.5 25.5 9 6.5 19.5 9.5 31 9.5s22-3.5 31-9.5c9-6.5 16.5-15 22.5-25.5 6-10 10.5-21.5 13.5-34.5 2.2-9.8 3.2-20 3.2-30.5 0-10.5-1-20.7-3.2-30.5-3-13-7.5-24.5-13.5-34.5-6-10.5-13.5-19-22.5-25.5-9-6-19.5-9.5-31-9.5zm-64.5 23.5C134 14.2 122.3 8.3 110.1 5.2c-12.2-3-24.9-2.2-36.8 2.2-11.9 4.5-22.6 12.6-31.2 23.2-8.6 10.6-14.8 23.2-18.2 36.8-3.5 13.5-4.2 27.8-1.9 41.5 2.2 13.8 7.5 26.8 15.2 38.2 7.8 11.4 17.8 21 29.2 28s24 11.2 37.2 12.2c13.2 1 26.2-1.2 38.2-6.5 12-5.2 22.8-13.2 31.8-23.2 9-10 16-22 20.2-35 4.2-13 5.5-26.8 3.8-40s-6.5-25.5-13.2-36c-6.8-10.5-15.8-19.5-26.2-26.5-10.5-7-22.2-11.5-34.5-13.5z"></path></svg>
+						   Join Discord!
+					   </button>
 					</div>
 
 					<!-- Center Column -->
@@ -170,71 +190,88 @@
 						<div class="card p-3 flex justify-between items-center">
 							<div class="flex items-center gap-2">
 								<div class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center font-bold text-black text-lg">P</div>
-								<span class="font-bold text-lg text-white">Player</span>
+								<span class="font-bold text-lg text-white" id="playerName">Player</span>
 							</div>
-							<button class="btn-secondary p-2 rounded-lg"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
 						</div>
 						
-						<form id="nameForm" method="get" class="space-y-4">
-							<input
-								type="text"
-								class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none"
-								maxlength="20"
-								id="nameInput"
-								placeholder="Enter your name"
-							/>
-							<select id="serverSelect" disabled class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-yellow-400 focus:outline-none">
-								<option>Loading...</option>
-							</select>
-						</form>
-
-						<button class="w-full btn-primary text-black font-extrabold py-4 text-xl rounded-lg" id="joinButton" disabled>
-							<span class="flex items-center justify-center gap-2">
-								<i data-lucide="play" class="w-6 h-6"></i>
-								JOIN GAME
-							</span>
-						</button>
+						<div id="centerSection">
+							<form id="nameForm" method="get" class="space-y-4">
+								<input
+									type="text"
+									class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none"
+									maxlength="20"
+									id="nameInput"
+									placeholder="Enter your name"
+								/>
+								<select id="serverSelect" disabled class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-yellow-400 focus:outline-none">
+									<option>Loading...</option>
+								</select>
+								<button type="submit" class="w-full btn-primary text-black font-extrabold py-4 text-xl rounded-lg" id="joinButton" disabled>
+									<span class="flex items-center justify-center gap-2">
+										<i data-lucide="swords" class="w-6 h-6"></i>
+										JOIN GAME
+									</span>
+								</button>
+							</form>
+						</div>
 
 						<div class="flex items-center gap-3">
 							<button class="btn-secondary w-full py-2.5 rounded-lg text-sm font-semibold flex items-center justify-center gap-2">
 								<i data-lucide="globe" class="w-4 h-4"></i>
-								Global
+								UE
 							</button>
 							<button class="btn-secondary w-full py-2.5 rounded-lg text-sm font-semibold flex items-center justify-center gap-2">
 								<i data-lucide="list" class="w-4 h-4"></i>
-								Browse Servers
+								Browse Lobbies
 							</button>
 						</div>
 
 						<div class="flex justify-around text-center py-2">
 							<div>
-								<p class="text-xl font-bold text-white">42</p>
-								<p class="text-xs text-gray-400">Players Online</p>
+								<p class="text-xl font-bold text-white">40</p>
+								<p class="text-xs text-gray-400">Players in Game</p>
 							</div>
 							<div>
-								<p class="text-xl font-bold text-cyan-400 text-glow">1,247</p>
-								<p class="text-xs text-gray-400">Games Played Today</p>
+								<p class="text-xl font-bold text-cyan-400 text-glow">$1,247</p>
+								<p class="text-xs text-gray-400">Global Player Winnings</p>
 							</div>
 						</div>
+
+						<button class="w-full btn-primary text-black font-bold py-2.5 rounded-lg text-sm">
+							<span class="flex items-center justify-center gap-2">
+							   <i data-lucide="users" class="w-4 h-4"></i>
+							   Manage Affiliate
+						   </span>
+					   </button>
 					</div>
 
 					<!-- Right Column -->
 					<div class="space-y-6">
-						<!-- Stats Card -->
+						<!-- Wallet Card -->
 						<div class="card p-4">
 							<div class="flex justify-between items-center mb-3">
 								<div class="flex items-center gap-2">
-									<i data-lucide="trending-up" class="text-green-400 w-5 h-5"></i>
-									<h2 class="font-bold text-lg text-white">Your Stats</h2>
+									<i data-lucide="wallet" class="text-green-400 w-5 h-5"></i>
+									<h2 class="font-bold text-lg text-white">Wallet</h2>
+								</div>
+								<div class="flex items-center gap-2">
+									<button class="btn-secondary p-2 rounded-lg" id="copyAddress">
+										<i data-lucide="copy" class="w-4 h-4"></i>
+									</button>
+									<button class="btn-secondary p-2 rounded-lg" id="refreshBalance">
+										<i data-lucide="refresh-cw" class="w-4 h-4"></i>
+									</button>
 								</div>
 							</div>
+							
 							<div class="text-center bg-gray-900/50 py-4 px-2 rounded-lg my-4">
-								<p class="text-4xl font-bold text-white">0</p>
-								<p class="text-sm text-gray-400">Best Score</p>
+								<p class="text-4xl font-bold text-white" id="balanceMain">$0.00</p>
+								<p class="text-sm text-gray-400" id="balanceCrypto">0.0000 SOL</p>
 							</div>
+							
 							<div class="grid grid-cols-2 gap-3">
-								<button class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 rounded-lg">View Stats</button>
-								<button class="w-full btn-blue text-white font-semibold py-2.5 rounded-lg">Share</button>
+								<button class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 rounded-lg" id="addFunds">Add Funds</button>
+								<button class="w-full btn-blue text-white font-semibold py-2.5 rounded-lg" id="cashOut">Cash Out</button>
 							</div>
 						</div>
 
@@ -247,12 +284,177 @@
 								</div>
 							</div>
 							<div class="flex justify-center items-center h-48 my-2">
-								<canvas id="skinButton" title="block customization" width="120" height="120" class="border border-gray-600 rounded-lg"></canvas>
+								<img src="https://i.imgur.com/7d42L8K.png" alt="Customizable character" class="h-24 object-contain" style="filter: drop-shadow(0 0 15px rgba(232, 121, 249, 0.4));">
 							</div>
 							<button class="w-full btn-secondary text-sm font-semibold py-2 rounded-lg">Change Appearance</button>
 						</div>
 					</div>
 				</main>
+				
+				<!-- Newsbox for game over screen -->
+				<div id="newsbox" class="card p-4 mb-6" style="display: none">
+					<h1>Recent updates!</h1>
+					<h3>Spectator mode</h3>
+					<p>
+						You can now spectate games using the 'spectator mode' toggle in the top right. Check it out! To
+						toggle visibility of other spectators, you can press the 'm' key. Many thanks to <a
+							href="https://github.com/jespertheend/splix/releases/tag/v0.19.0"
+						>our contributors</a> for this feature!
+					</p>
+					<h3><peli-plus-icon></peli-plus-icon> Pelican Party+</h3>
+					<p>
+						Patreon support has been in a broken state for years now, so this month it was finally removed
+						for good. But not to worry, you can still support the development of our games!
+					</p>
+					<p>
+						I've been working on a subscription called 'Pelican Party Plus' for the games I develop with a
+						friend, so I decided to use it for splix as well.
+					</p>
+					<p>
+						If you subscribe, you'll receive perks in our <a
+							href="https://pelicanparty.games"
+							target="_blank"
+						>other games</a> as well as in splix. Perks differ from game to game, but for splix you'll
+						disable ads and unlock a custom skin and color.
+					</p>
+					<p>
+						If you'd like to support us, <a
+							href="https://pelicanparty.games/subscribe"
+							target="_blank"
+							class="support-us-link"
+						>please click here.</a>
+					</p>
+					<h3>Global leaderboards</h3>
+					<p>
+						After being gone for a long time, the global leaderboards are now available again. <a
+							href="/leaderboards"
+						>Check them out</a>!
+					</p>
+					<h3>Server selection</h3>
+					<p>
+						As you may have noticed, Splix has changed a bit recently. Connecting to the teams gamemode has
+						been broken for a while. So it's UI has been removed for now. Instead, you can now select a
+						server that you'd like to connect to from the dropdown menu. Don't worry though! The plan is to
+						bring back teams, hopefully within the next few weeks.
+					</p>
+					<h3>New server rewrite</h3>
+					<p>
+						The server code has been completely rewritten from scratch. There shouldn't be much of a
+						difference though, the core gameplay is still the same, but there are some subtle differences.
+						These servers may have some new bugs, but some long standing bugs have also been fixed. If you
+						wish, you may select the 'Legacy' server from the dropdown menu to play on the old server.
+					</p>
+					<p>
+						Overal, the new servers should be more stable than the old one, but more importantly: Their code
+						is much more modern and better organised, which makes it easier to maintain them. Which brings
+						me to my next point...
+					</p>
+					<h3>Splix is now open source</h3>
+					<p>
+						That's right, you can view or contribute to the code <a
+							href="https://github.com/jespertheend/splix"
+							target="_blank"
+						>on GitHub</a>. This also allows you to host your own server instance. If you wish to play with
+						just your friends, or if you want custom gameplay, the GitHub repository contains info on how to
+						host and connect to your own instance.
+					</p>
+					<p>
+						Feel free to contact @jespertheend on <a href="https://discord.gg/Zr3r5fJ" target="_blank"
+						>the splix Discord</a> if you'd like your server to be added to the 'unofficial' section in the
+						server selection dropdown menu.
+					</p>
+					<h3>Changelog</h3>
+					<p>
+						Changes for each version can be found <a
+							href="https://github.com/jespertheend/splix/releases"
+							target="_blank"
+						>on GitHub</a>. Older changes are listed below:
+					</p>
+					<ul>
+						<li>Fixed 'o' key toggling leaderboard even in the login screen.</li>
+						<li>
+							Fixed being able to kill yourself by pausing and then moving in the opposite direcion
+							(making a 180 degree turn).
+						</li>
+						<li>
+							Fixed keys getting stuck when holding them and clicking away the focus from the browser
+							window.
+						</li>
+						<li>
+							Fixed an issue where other players would have a ghost trail while they were in their own
+							land.
+						</li>
+						<li>Fixed #animal names of servers changing every minute.</li>
+						<li>
+							Fixed an issue that would break servers entirely, causing a 'Couldn't connect' error to
+							appear whenever you tried to join.
+						</li>
+						<li>You can now toggle leaderboard visibility using the 'o' key.</li>
+						<li>
+							When opening a team url on a mobile browser, the page will ask to redirect to the app since
+							the app now has team mode support.
+						</li>
+						<li>Added an ugly mode toggle to the home screen.</li>
+						<li>If you're the creator of the game you'll get fancy goggles</li>
+						<li>Holding an arrow key while pressing another arrow key now remembers your direction</li>
+						<li>
+							Removed the letters L and i from team urls because they look too much like each other
+						</li>
+						<li>
+							Fixed not being able to connect to a team server when starting a game too quickly after
+							creating a team.
+						</li>
+						<li>
+							Opening a #team url or a url with an #animal in it now asks if you want to open the app on
+							mobile devices. wext mobile update will have support for teams :)
+						</li>
+						<li>Fixed dying after having just killed another player.</li>
+						<li>Fixed two players being able to kill the same player at once.</li>
+						<li>
+							Changed the map size back to 600x600 to lower the chance of spawning in someones land.
+							Player count is now between 60 and 90 players per lobby. There are also only two lobbies per
+							server now, which should also decrease the amount of lag.
+						</li>
+						<li>
+							Changed the port of the team server, if you weren't able to connect to the team server first
+							you might be now.
+						</li>
+						<li>Added Patreon support</li>
+						<li>Added patreon pattern and gold color.</li>
+						<li>Added luh pattern.</li>
+						<li>
+							Changed the limit of amount of players per server to about 70, the map is now 500x500 in
+							size.
+						</li>
+						<li>Fixed kills being counted twice.</li>
+						<li>
+							Made the spawn algorithm a bit less accurate when a lot of players are spawning at once,
+							this was causing a lot of lag.
+						</li>
+						<li>Added new teams gamemode.</li>
+						<li>Added local high scores.</li>
+						<li>Fixed players not having the same color as their land.</li>
+						<li>+500 is now only shown when you are the one who killed a player.</li>
+						<li>Made the changelog scrollable.</li>
+						<li>Fixed key strokes not getting registered.</li>
+						<li>Fixed the disconnected message from being spammed.</li>
+						<li>Quality is now set to high by default.</li>
+						<li>Fixed players spawning all at the same position.</li>
+						<li>Fixed blocks being captured at the edge of your area because of lag.</li>
+						<li>Fixed border blocks turning into player blocks.</li>
+						<li>
+							Added an ugly mode which can be enabled on <a
+								href="http://splix.io/flags"
+								target="_blank"
+							>splix.io/flags</a>.
+						</li>
+						<li>Added a box with the latest changes and news.</li>
+						<li>
+							Use the P key to freeze your player, in case you need a toilet break. But watch out! Anyone
+							can kill you when paused, even on your own land.
+						</li>
+					</ul>
+				</div>
 			</div>
 			
 			<!-- Hidden elements for game functionality -->
@@ -265,24 +467,21 @@
 				<div id="bestStatsLeft" class="lastStatsBlock" style="text-align: right">Best game:</div>
 				<div id="bestStatsRight" class="lastStatsBlock" style="text-align: left"></div>
 			</div>
-			<div id="adboxContainer" style="display: none">
-				<button class="remove-ads-button">Don't want to see ads?</button>
-				<div id="adboxContent"></div>
-			</div>
 			<div id="tutorialText" style="opacity: 0"></div>
 			<canvas id="tutorialCanvas" width="300" height="300" style="display: none"></canvas>
 			<div id="expandPage"></div>
+			<canvas id="skinButton" title="block customization" width="30" height="30" style="display: none"></canvas>
 			<div id="skinButtonShadow"></div>
 			<div id="cornerLinks" class="fixed top-4 right-4 text-sm">
-				<a href="/about" class="text-gray-400 hover:text-white mr-4">about</a>
-				<a href="/leaderboards" class="text-gray-400 hover:text-white mr-4">leaderboards</a>
-				<a href="/privacy" class="text-gray-400 hover:text-white mr-4">privacy</a>
+				<!-- <a href="/about" class="text-gray-400 hover:text-white mr-4">about</a> -->
+				<!-- <a href="/leaderboards" class="text-gray-400 hover:text-white mr-4">leaderboards</a> -->
+				<!-- <a href="/privacy" class="text-gray-400 hover:text-white mr-4">privacy</a> -->
 				<br>
-				<a id="qualityText" class="text-gray-400 hover:text-white cursor-pointer">Quality: high</a>
+				<a id="qualityText" class="text-gray-400 hover:text-white cursor-pointer" style="display: none">Quality: high</a>
 				<br>
-				<a id="uglyText" class="text-gray-400 hover:text-white cursor-pointer">Ugly mode: off</a>
+				<a id="uglyText" class="text-gray-400 hover:text-white cursor-pointer" style="display: none">Ugly mode: off</a>
 				<br>
-				<a id="spectatorText" class="text-gray-400 hover:text-white cursor-pointer">Spectator mode: off</a>
+				<a id="spectatorText" class="text-gray-400 hover:text-white cursor-pointer" style="display: none">Spectator mode: off</a>
 			</div>
 		</div>
 		<div id="skinScreen" style="display: none">
@@ -340,6 +539,15 @@
 		
 		<script>
 			lucide.createIcons();
+			
+			// Debug: Check if logoCanvas exists
+			window.addEventListener('DOMContentLoaded', function() {
+				const canvas = document.getElementById('logoCanvas');
+				console.log('logoCanvas found:', canvas);
+				if (canvas) {
+					console.log('Canvas dimensions:', canvas.width, 'x', canvas.height);
+				}
+			});
 		</script>
 	</body>
 </html>

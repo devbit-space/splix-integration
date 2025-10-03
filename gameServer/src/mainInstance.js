@@ -57,7 +57,8 @@ if (import.meta.main) {
 `);
 	} else {
 		const port = args.p || args.port || 8080;
-		const hostname = args.h || args.hostname || "127.0.0.1";
+		// const hostname = args.h || args.hostname || "127.0.0.1";
+		const hostname = args.h || args.hostname || "0.0.0.0";
 		let arenaWidth = parseInt(args.arenaWidth || 100);
 		let arenaHeight = parseInt(args.arenaHeight || 100);
 		const arenaSize = parseInt(args.s || args.arenaSize || 0);

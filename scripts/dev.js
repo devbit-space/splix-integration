@@ -95,6 +95,7 @@ if (!Deno.args.includes("--no-init")) {
 	];
 
 	Deno.serve({
+		hostname: "0.0.0.0",
 		port: 8080,
 	}, async (request, info) => {
 		const url = new URL(request.url);
