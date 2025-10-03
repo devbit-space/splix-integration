@@ -65,20 +65,193 @@ generateTypes({
 });
 
 if (!Deno.args.includes("--no-init")) {
-	const gameServer = initGameServer({
-		arenaWidth: 40,
-		arenaHeight: 40,
-		pitWidth: 16,
-		pitHeight: 16,
-		gameMode: "default",
-		hooks: {
-			peliAuthCodeReceived(connection, code) {
-				connection.plusSkinsAllowed = true;
-			},
+	// Create multiple game servers with different configurations to match original game variety
+	const gameServers = [
+		// Official Regional Servers
+		{
+			instance: initGameServer({
+				arenaWidth: 100,
+				arenaHeight: 100,
+				pitWidth: 16,
+				pitHeight: 16,
+				gameMode: "default",
+				hooks: {
+					peliAuthCodeReceived(connection, code) {
+						connection.plusSkinsAllowed = true;
+					},
+				},
+			}),
+			port: 8081,
+			name: "US East",
+			id: 1,
+			official: true,
+			recommended: true
 		},
-	});
+		{
+			instance: initGameServer({
+				arenaWidth: 100,
+				arenaHeight: 100,
+				pitWidth: 16,
+				pitHeight: 16,
+				gameMode: "default",
+				hooks: {
+					peliAuthCodeReceived(connection, code) {
+						connection.plusSkinsAllowed = true;
+					},
+				},
+			}),
+			port: 8082,
+			name: "Europe",
+			id: 2,
+			official: true,
+			recommended: false
+		},
+		{
+			instance: initGameServer({
+				arenaWidth: 100,
+				arenaHeight: 100,
+				pitWidth: 16,
+				pitHeight: 16,
+				gameMode: "default",
+				hooks: {
+					peliAuthCodeReceived(connection, code) {
+						connection.plusSkinsAllowed = true;
+					},
+				},
+			}),
+			port: 8083,
+			name: "US West",
+			id: 3,
+			official: true,
+			recommended: false
+		},
+		// Unofficial Game Mode Servers
+		{
+			instance: initGameServer({
+				arenaWidth: 80,
+				arenaHeight: 80,
+				pitWidth: 20,
+				pitHeight: 20,
+				gameMode: "arena",
+				hooks: {
+					peliAuthCodeReceived(connection, code) {
+						connection.plusSkinsAllowed = true;
+					},
+				},
+			}),
+			port: 8084,
+			name: "Arena",
+			id: 4,
+			official: false,
+			recommended: false
+		},
+		{
+			instance: initGameServer({
+				arenaWidth: 120,
+				arenaHeight: 120,
+				pitWidth: 12,
+				pitHeight: 12,
+				gameMode: "drawing",
+				hooks: {
+					peliAuthCodeReceived(connection, code) {
+						connection.plusSkinsAllowed = true;
+					},
+				},
+			}),
+			port: 8085,
+			name: "Drawing",
+			id: 5,
+			official: false,
+			recommended: false
+		},
+		// Additional Regional Servers
+		{
+			instance: initGameServer({
+				arenaWidth: 100,
+				arenaHeight: 100,
+				pitWidth: 16,
+				pitHeight: 16,
+				gameMode: "default",
+				hooks: {
+					peliAuthCodeReceived(connection, code) {
+						connection.plusSkinsAllowed = true;
+					},
+				},
+			}),
+			port: 8086,
+			name: "Asia",
+			id: 6,
+			official: true,
+			recommended: false
+		},
+		{
+			instance: initGameServer({
+				arenaWidth: 100,
+				arenaHeight: 100,
+				pitWidth: 16,
+				pitHeight: 16,
+				gameMode: "default",
+				hooks: {
+					peliAuthCodeReceived(connection, code) {
+						connection.plusSkinsAllowed = true;
+					},
+				},
+			}),
+			port: 8087,
+			name: "Oceania",
+			id: 7,
+			official: true,
+			recommended: false
+		},
+		// Specialized Servers
+		{
+			instance: initGameServer({
+				arenaWidth: 60,
+				arenaHeight: 60,
+				pitWidth: 8,
+				pitHeight: 8,
+				gameMode: "arena",
+				hooks: {
+					peliAuthCodeReceived(connection, code) {
+						connection.plusSkinsAllowed = true;
+					},
+				},
+			}),
+			port: 8088,
+			name: "Small Arena",
+			id: 8,
+			official: false,
+			recommended: false
+		},
+		{
+			instance: initGameServer({
+				arenaWidth: 150,
+				arenaHeight: 150,
+				pitWidth: 24,
+				pitHeight: 24,
+				gameMode: "drawing",
+				hooks: {
+					peliAuthCodeReceived(connection, code) {
+						connection.plusSkinsAllowed = true;
+					},
+				},
+			}),
+			port: 8089,
+			name: "Large Drawing",
+			id: 9,
+			official: false,
+			recommended: false
+		}
+	];
+
+	// Start all game servers
+	for (const server of gameServers) {
+		server.instance.init({ port: server.port, hostname: "0.0.0.0" });
+		console.log(`Started ${server.name} on port ${server.port}`);
+	}
+
 	// @ts-ignore
-	globalThis.gameServer = gameServer;
+	globalThis.gameServers = gameServers;
 
 	const persistentStoragePath = resolve("serverManager/persistentStorage.json");
 	const serverManager = initServerManager({
@@ -117,10 +290,23 @@ if (!Deno.args.includes("--no-init")) {
 							<ul>
 								<li><a href="/client/">/client/</a> - The splix client.</li>
 								<li><a href="/client/flags.html">/client/flags.html</a> - Client flags for debugging etc.</li>
-								<li>/gameserver - The gameserver, <a href="/client/#ip=ws://82.29.179.56:8080/gameserver">click here to connect to it using a client</a></li>
+								<li>/gameserver - The gameserver, <a href="/client/#ip=ws://localhost:8080/gameserver">click here to connect to it using a client</a></li>
 								<li><a href="/adminpanel/">/adminpanel/</a> - Admin panel for server management.</li>
 								<li>/servermanager/ - Hosts several endpoints for servermanagement.</li>
 								<li><a href="/servermanager/gameservers">/servermanager/gameservers</a> - Endpoint which can be used by clients to list available servers.</li>
+								<li><strong>Available Game Servers:</strong>
+									<ul>
+										<li>US East (Official, Recommended) - /gameserver/1</li>
+										<li>Europe (Official) - /gameserver/2</li>
+										<li>US West (Official) - /gameserver/3</li>
+										<li>Arena (Unofficial) - /gameserver/4</li>
+										<li>Drawing (Unofficial) - /gameserver/5</li>
+										<li>Asia (Official) - /gameserver/6</li>
+										<li>Oceania (Official) - /gameserver/7</li>
+										<li>Small Arena (Unofficial) - /gameserver/8</li>
+										<li>Large Drawing (Unofficial) - /gameserver/9</li>
+									</ul>
+								</li>
 							</ul>
 						</p>
 					</body>
@@ -133,7 +319,16 @@ if (!Deno.args.includes("--no-init")) {
 				},
 			);
 		} else if (url.pathname == "/gameserver") {
-			return gameServer.websocketManager.handleRequest(request, info);
+			// Default to classic mode server
+			return gameServers[0].instance.websocketManager.handleRequest(request, info);
+		} else if (url.pathname.startsWith("/gameserver/")) {
+			// Handle specific game server requests
+			const serverId = url.pathname.split("/")[2];
+			const serverIndex = parseInt(serverId) - 1;
+			if (serverIndex >= 0 && serverIndex < gameServers.length) {
+				return gameServers[serverIndex].instance.websocketManager.handleRequest(request, info);
+			}
+			return new Response("Game server not found", { status: 404 });
 		} else if (url.pathname.startsWith("/servermanagerToken")) {
 			return new Response(INSECURE_LOCALHOST_SERVERMANAGER_TOKEN);
 		} else if (url.pathname.startsWith("/servermanager")) {
