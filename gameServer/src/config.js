@@ -84,7 +84,7 @@ export const LEADERBOARD_UPDATE_FREQUENCY = 3_000;
  * once the player count falls below this threshold,
  * allowing players to at least get their current progress on the leaderboard.
  */
-export const REQUIRED_PLAYER_COUNT_FOR_GLOBAL_LEADERBOARD = 10;
+export const REQUIRED_PLAYER_COUNT_FOR_GLOBAL_LEADERBOARD = 2;
 
 /**
  * List of game modes where scores are reported to the global leaderboard.
