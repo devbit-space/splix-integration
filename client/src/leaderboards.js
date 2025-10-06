@@ -135,6 +135,18 @@ function createLeaderboard(scores, title, metric, isTimeValue) {
 	titleEl.classList.add("tblHead");
 	titleEl.textContent = title;
 
+	// Check if there's no data
+	if (!scores || scores.length === 0) {
+		const noDataEl = document.createElement("div");
+		noDataEl.style.textAlign = "center";
+		noDataEl.style.padding = "20px";
+		noDataEl.style.color = "#888";
+		noDataEl.style.fontStyle = "italic";
+		noDataEl.textContent = "No data available yet";
+		leaderboardEl.append(titleEl, noDataEl);
+		return leaderboardEl;
+	}
+
 	const tableEl = document.createElement("table");
 
 	const trEl = document.createElement("tr");
@@ -182,6 +194,7 @@ function createLeaderboard(scores, title, metric, isTimeValue) {
 
 const leaderboardData = await loadLeaderboardData();
 const { daily, weekly } = leaderboardData;
+console.log("leaderboardData ===>", leaderboardData);
 createLeaderboards(daily.kills, weekly.kills, killsBoard, "Kills");
 createLeaderboards(daily.tiles, weekly.tiles, tilesBoard, "Tiles");
 createLeaderboards(daily.timeAliveSeconds, weekly.timeAliveSeconds, timeAliveBoard, "Time", true);
